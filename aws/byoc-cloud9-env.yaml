@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS CloudFormation template for Cloud9.
+Parameters:
+  01C9InstanceType:
+    Description: Cloud9 instance type
+    Type: String
+    Default: t2.small
+    AllowedValues:
+      - m4.large
+      - m4.xlarge
+      - t2.large
+      - t2.small
+      - t2.medium
+    ConstraintDescription: Must be a valid Cloud9 instance type
+Mappings:
+  AWSRegion2AMI:
+    us-east-1:
+      AMI: ami-0ee43063d08ad19d2
+    us-west-2:
+      AMI: ami-019f1da417e0ce397
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterLabels:
+      01InstanceType:
+        default: >-
+          Provision an EC2 Instance to create Docker image, with the following
+          instance type
+Resources:
+  C9Instance:
+    Description: '-'
+    Type: 'AWS::Cloud9::EnvironmentEC2'
+    Properties:
+      Description: AWS Cloud9 instance for byoc builder session
+      AutomaticStopTimeMinutes: 120
+      InstanceType: !Ref 01C9InstanceType
+      Name: !Ref 'AWS::StackName'
